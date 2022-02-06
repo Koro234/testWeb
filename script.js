@@ -76,8 +76,8 @@ class Task {
     description;
     creationDate;
     endDate;
-    user;
     htmlElement;
+    user;
 }
 
 const mainContainer = document.getElementById('mainContainer');
@@ -87,6 +87,20 @@ const numbersDays = document.getElementsByClassName('number-day');
 const leftButton = document.getElementById('leftButton');
 const rightButton = document.getElementById('rightButton');
 
+const saveButton = document.getElementById('saveSettings');
+saveButton.onclick = SaveTask;
+const popup = document.getElementById('popup');
+const subjectPopup = document.getElementById('subject');
+const descriptionPopup = document.getElementById('description');
+const planStartDate = document.getElementById('planStartDate');
+const planEndDate = document.getElementById('planEndDate');
+const statusPopup = document.getElementById('status');
+const executor = document.getElementById('executor');
+const popupCloseArea = document.getElementById('popupCloseArea');
+const popupClose = document.getElementById('popupClose');
+popupCloseArea.onclick = ClosePopup;
+popupClose.onclick = ClosePopup;
+
 let now = new Date();
 let leftDate = new Date();
 let rightDate = new Date();
@@ -95,6 +109,64 @@ let dateArray = [];
 let userArray = [];
 let tasksOnDesc = [];
 let tasksOnBacklog = [];
+let edittingTask;
+///
+function ClosePopup() {
+    if (popup)
+    {
+        popup.classList.remove('open');
+    }
+}
+function OpenPopupFromBacklog(e) {
+    var tempTask = (tasksOnBacklog.filter(f => f.id === e.target.parentElement.id))[0];
+    if (popup)
+    {
+        popup.classList.add('open');
+    }
+    if (tempTask)
+    {
+        FillPopup(tempTask);
+    }
+}
+function FillPopup (Task) {
+    subjectPopup.value = Task.subject;
+    descriptionPopup.value = Task.description;
+    planStartDate.value = Task.planStartDate;
+    planEndDate.value =  Task.planEndDate;
+    statusPopup.value = Task.status;
+    CreateListExecutor(Task.executor);
+    edittingTask = Task;
+}
+//Создание списка users
+function CreateListExecutor(id) {
+    executor.innerHTML = '';
+    var option = document.createElement('option');
+    option.innerText = 'Выберите...';
+    option.selected = true;
+    option.disabled = true;
+    executor.append(option);
+    userArray.forEach(f => {
+        var option = document.createElement('option');
+        option.value = f.id;
+        option.innerText = `${f.firstName} ${f.secondName} ${f.surname}`;
+        option.selected = f.id == id;
+        executor.append(option);
+    });
+}
+function SaveTask() {
+    edittingTask.subject = subjectPopup.value;
+    edittingTask.description = descriptionPopup.value;
+    edittingTask.planStartDate = planStartDate.value;
+    edittingTask.planEndDate = planEndDate.value;
+    edittingTask.status = statusPopup.value;
+    edittingTask.executor = executor.options[executor.options.selectedIndex].value;
+    if (edittingTask.executor)
+    {
+        edittingTask.user = (userArray.filter(f => f.id == edittingTask.executor))[0];
+    }
+    UpdateAll(edittingTask);
+    ClosePopup();
+}
 // открытие приложения
 function Load() {
     UpdateDatesLine();
@@ -106,11 +178,11 @@ function CreateUserContainer(User) {
     const userContainer = document.createElement('div');
     userContainer.classList.add('user-container');
     userContainer.id = User.id;
-    userContainer.ondragover = allowDrop;
+    userContainer.ondragover = AllowDrop;
     mainContainer.appendChild(userContainer);
     const userName = document.createElement('div');
     userName.classList.add('user-name');
-    userName.ondrop = dropOnName;
+    userName.ondrop = DropOnName;
     userName.innerText = `${User.firstName} ${User.secondName} ${User.surname}`;
     userContainer.appendChild(userName);
     for (var i = 0; i < 7; i++)
@@ -118,7 +190,7 @@ function CreateUserContainer(User) {
         let dayElement = document.createElement('div');
         dayElement.classList.add('day');
         dayElement.setAttribute('day-of-week', i);
-        dayElement.ondrop = dropOnDay;
+        dayElement.ondrop = DropOnDay;
         userContainer.append(dayElement);
     }
     const events = document.createElement('div');
@@ -189,7 +261,7 @@ function CreateTaskOnDesk(User, Task) {
     }
 }
 // 
-function ConstructorTaskElement(Task, start, spane) {
+function ConstructorTaskElement(Task, start, spane) { // много дублежа кода, нужно переделать
     var event = document.createElement('div');
     event.classList.add('event');
     event.id = Task.id;
@@ -223,40 +295,29 @@ function CreateTaskOnBacklog(Task) {
     backlogContainer.classList.add('task');
     backlogContainer.draggable = true;
     backlogContainer.id = Task.id;
+    backlogContainer.addEventListener("click", function(e) {OpenPopupFromBacklog(e)});
     var subject = document.createElement('div');
     subject.classList.add('subject');
     subject.innerText = Task.subject;
     backlogContainer.append(subject);
-    backlogContainer.ondragstart = drag;
+    backlogContainer.ondragstart = Drag;
     mainBacklog.appendChild(backlogContainer);
     Task.htmlElement = backlogContainer;
-    var additionalInfo = document.createElement('div');
-    additionalInfo.classList.add('additional-info');
-    backlogContainer.append(additionalInfo);
     var description = document.createElement('div');
-    description.innerText = Task.description;
-    additionalInfo.append(description);
-    let formatForDays = new Intl.DateTimeFormat("ru", {
-        day: "numeric",
-        month: "numeric"
-    });
-    var dateStart = document.createElement('div');
-    dateStart.innerText = 'С ' + formatForDays.format(new Date(Task.planStartDate));
-    additionalInfo.append(dateStart);
-    var dateEnd = document.createElement('div');
-    dateEnd.innerText = 'По ' + formatForDays.format(new Date(Task.planEndDate));
-    additionalInfo.append(dateEnd);
+    description.classList.add('description');
+    description.innerText = Task.description ? Task.description : "Тут может быть ваше описание";
+    backlogContainer.append(description);
 }
 //
-function allowDrop(e) {
+function AllowDrop(e) {
     e.preventDefault();
 }
 //
-function drag(e) {
+function Drag(e) {
     e.dataTransfer.setData('id', e.target.id);
 }
 // дроп на пользователя
-function dropOnName(e) {
+function DropOnName(e) {
     let taskId = e.dataTransfer.getData('id');
     if (taskId)
     {
@@ -270,7 +331,7 @@ function dropOnName(e) {
     }
 }
 // дроп на день
-function dropOnDay(e) {
+function DropOnDay(e) {
     let taskId = e.dataTransfer.getData('id');
     if (taskId)
     {
@@ -294,6 +355,20 @@ function UpdateTasksOnDesk() {
 function UpdateTasksOnBacklog() {
     mainBacklog.innerHTML = '';
     tasksOnBacklog.forEach(f => CreateTaskOnBacklog(f));
+}
+function UpdateAll(Task) {
+    tasksOnDesc = tasksOnDesc.filter(f => f.id !== Task.id);
+    tasksOnBacklog = tasksOnBacklog.filter(f => f.id !== Task.id);
+    if (Task.executor)
+    {
+        tasksOnDesc.push(Task);
+    }
+    else
+    {
+        tasksOnBacklog.push(Task);
+    }
+    UpdateTasksOnDesk();
+    UpdateTasksOnBacklog();
 }
 // работа с датами (вверх)
 function UpdateDatesLine() {
@@ -329,12 +404,14 @@ function UpdateDatesLine() {
     }
 }
 // изменение навигации
-function changeNav(num) {
+function ChangeNav(num) {
     navWeek += num;
     UpdateDatesLine();
     UpdateTasksOnDesk();
 }
-leftButton.onclick = function(){changeNav(-1)};
-rightButton.onclick = function(){changeNav(1)};
+leftButton.onclick = function(){ChangeNav(-1)};
+rightButton.onclick = function(){ChangeNav(1)};
+
+
 
 Load();

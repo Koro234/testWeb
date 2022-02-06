@@ -49,6 +49,21 @@
             </main>
         </div>
     </div>
+    <div class="popup" id="popup">
+        <div class="popup-body">
+            <a href="#" class="popup-close-area" id="popupCloseArea"></a>
+            <div class="popup-content">
+                <div class="popup-text">Тема:</div><input type="text" id="subject">
+                <div class="popup-text">Описание:</div><input type="description" id="description">
+                <div class="popup-text">Дата начала:</div><input type="date" id="planStartDate">
+                <div class="popup-text">Дата окончания:</div><input type="date" id="planEndDate">
+                <div class="popup-text">Статус:</div><input type="number" id="status">
+                <div class="popup-text">Ответственный:</div><select type="number" id="executor"></select>
+                <button class="save-settings" id="saveSettings">Сохранить</button>
+                <a href="#" class="popup-close" id="popupClose">X</a>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="./script.js"></script>
 </html>
