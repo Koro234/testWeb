@@ -165,8 +165,12 @@ button {
     column-gap: 10px;
 }
 .event {
+    box-sizing: border-box;
     background-color: #CCC;
     height: 20px;
+    display: flex;
+    text-align: left;
+    padding-left: 10px;
 }
 .event-end { 
     border-top-right-radius: 10px; 

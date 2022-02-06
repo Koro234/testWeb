@@ -11,13 +11,13 @@
     <div class="box" id="box">
         <header class="header-container">
             <div class="buttons">
-                <button class="left-button">Предыдущая неделя</button>
-                <button class="right-button">Следующая неделя</button>
+                <button class="left-button" id="leftButton">Предыдущая неделя</button>
+                <button class="right-button" id="rightButton">Следующая неделя</button>
             </div>
-            <div class="now-date">Февраль, 2022</div>
+            <div class="now-date" id="nowDate">Февраль, 2022</div>
             <div class="other"></div>
         </header>
-        <main class="main-container">
+        <main class="main-container" id="mainContainer">
             <div class="users-head">Пользователи</div>
             <div class="days-line">
                 <div class="head-day">Понедельник
@@ -42,248 +42,10 @@
                     <div class="number-day">1</div>
                 </div>
             </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
-            <div class="user-container">
-                <div class="user-name">user</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="day">1</div>
-                <div class="events">
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="1" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="5" event-span="1">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                    <div class="event event-start event-end" event-start="2" event-span="3">test</div>
-                </div>
-            </div>
         </main>
         <div class="backlog" id="backLog">
             <header class="header-backlog">Backlog</header>
-            <main class="main-backlog">
+            <main class="main-backlog" id="mainBacklog">
                 <div class="task">Task</div>
                 <div class="task">Task</div>
                 <div class="task">Task</div>
@@ -304,4 +66,5 @@
         </div>
     </div>
 </body>
+<script src="./script.js"></script>
 </html>
