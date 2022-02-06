@@ -196,6 +196,25 @@ function ConstructorTaskElement(Task, start, spane) {
     event.setAttribute('event-start', start);
     event.setAttribute('event-span', spane);
     event.innerText = Task.subject;
+    var description = document.createElement('div');
+    description.innerText = Task.description;
+    event.append(description);
+    var additionalInfo = document.createElement('div');
+    additionalInfo.classList.add('additional-info-event');
+    event.append(additionalInfo);
+    var description = document.createElement('div');
+    description.innerText = Task.description;
+    additionalInfo.append(description);
+    let formatForDays = new Intl.DateTimeFormat("ru", {
+        day: "numeric",
+        month: "numeric"
+    });
+    var dateStart = document.createElement('div');
+    dateStart.innerText = 'С ' + formatForDays.format(new Date(Task.planStartDate));
+    additionalInfo.append(dateStart);
+    var dateEnd = document.createElement('div');
+    dateEnd.innerText = 'По ' + formatForDays.format(new Date(Task.planEndDate));
+    additionalInfo.append(dateEnd);
     return event;
 }
 //
@@ -204,10 +223,29 @@ function CreateTaskOnBacklog(Task) {
     backlogContainer.classList.add('task');
     backlogContainer.draggable = true;
     backlogContainer.id = Task.id;
-    backlogContainer.textContent = Task.subject;
+    var subject = document.createElement('div');
+    subject.classList.add('subject');
+    subject.innerText = Task.subject;
+    backlogContainer.append(subject);
     backlogContainer.ondragstart = drag;
     mainBacklog.appendChild(backlogContainer);
     Task.htmlElement = backlogContainer;
+    var additionalInfo = document.createElement('div');
+    additionalInfo.classList.add('additional-info');
+    backlogContainer.append(additionalInfo);
+    var description = document.createElement('div');
+    description.innerText = Task.description;
+    additionalInfo.append(description);
+    let formatForDays = new Intl.DateTimeFormat("ru", {
+        day: "numeric",
+        month: "numeric"
+    });
+    var dateStart = document.createElement('div');
+    dateStart.innerText = 'С ' + formatForDays.format(new Date(Task.planStartDate));
+    additionalInfo.append(dateStart);
+    var dateEnd = document.createElement('div');
+    dateEnd.innerText = 'По ' + formatForDays.format(new Date(Task.planEndDate));
+    additionalInfo.append(dateEnd);
 }
 //
 function allowDrop(e) {
@@ -217,7 +255,7 @@ function allowDrop(e) {
 function drag(e) {
     e.dataTransfer.setData('id', e.target.id);
 }
-//
+// дроп на пользователя
 function dropOnName(e) {
     let taskId = e.dataTransfer.getData('id');
     if (taskId)
@@ -231,7 +269,7 @@ function dropOnName(e) {
         UpdateTasksOnDesk();
     }
 }
-//
+// дроп на день
 function dropOnDay(e) {
     let taskId = e.dataTransfer.getData('id');
     if (taskId)
