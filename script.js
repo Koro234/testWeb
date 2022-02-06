@@ -198,7 +198,7 @@ function ConstructorTaskElement(Task, start, spane) {
 //
 function CreateTaskOnBacklog(Task) {
     var backlogContainer = document.createElement('div');
-    backlogContainer.classList.add('backlog-container');
+    backlogContainer.classList.add('task');
     backlogContainer.draggable = true;
     backlogContainer.id = Task.id;
     backlogContainer.textContent = Task.subject;
