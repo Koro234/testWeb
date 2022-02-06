@@ -1,0 +1,272 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Proxima Nova", sans-serif;
+}
+:root {
+    --clr: rgb(27, 25, 34);
+    --back: rgb(255, 255, 255, 0.15);
+    --cell-size: minmax(125px, 1fr);
+    --event-size: minmax(115px, 1fr);
+}
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--clr);
+}
+.box {
+    width: 95%;
+    height: 95%;
+    min-width: 900px;
+    max-width: 2000px;
+    min-height: 650px;
+    max-height: 1200px;
+    background-color: var(--back);
+    border-radius: 10px 10px 10px 10px;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: 50px 50px auto;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
+}
+.header-container {
+    z-index: 20;
+    grid-column: 1/8;
+    width: 100%;
+    height: 50px;
+    box-shadow: 
+    inset 5px -5px 5px rgba(0,0,0,.6),
+    inset 5px 5px 10px rgba(252,255,255,.7),
+    0 0 10px 10px rgb(0, 0, 0, 0.4);
+    background-color: rgb(19, 17, 27);
+    position: sticky;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(8, var(--cell-size));
+}
+.buttons {
+    grid-column: 1/3;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-flow: row;
+}
+button {
+    width: 100%;
+    height: 100%;
+    box-shadow: 
+    inset -5px -5px 5px rgba(0,0,0,.6),
+    inset 5px 5px 10px rgba(252,255,255,.7),
+    0 0 10px 10px rgb(0, 0, 0, 0.4);
+    background-color: rgb(36, 175, 133);
+}
+.now-date {
+    grid-column: 3/7;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+    color: white;
+}
+.other {
+    grid-column: 7/9;
+}
+.main-container {
+    grid-column: 1/8;
+    grid-row: 2/4;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, var(--cell-size));
+    grid-auto-rows: min-content;
+    position: sticky;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    row-gap: 4px;
+}
+.users-head {
+    z-index: 20;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    width: 100%;
+    height: 100%;
+    box-shadow: 
+    inset -5px -5px 5px rgba(0,0,0,.6),
+    inset 5px 5px 10px rgba(252,255,255,.7),
+    0 0 10px 10px rgb(0, 0, 0, 0.4);
+    background-color: rgb(36, 175, 133);
+    border-radius: 5px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+    position: sticky;
+    left: 0;
+    top: 0;
+}
+.days-line {
+    z-index: 15;
+    grid-column: 2/9;
+    display: grid;
+    grid-template-columns: repeat(7, var(--cell-size));
+    position: sticky;
+    top: 0;
+}
+.head-day {
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(0, 143, 179);
+    border: 1px rgba(0, 0, 0, 0.4) solid;
+}
+.user-container {
+    grid-column: 1/9;
+    min-height: 50px;
+    height: min-content;
+    display: grid;
+    grid-template-columns: repeat(8, var(--cell-size));
+    position: relative;
+}
+.user-name {
+    z-index: 10;
+    grid-column: 1/2;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+    background-color: rgb(0, 143, 179);
+    position: sticky;
+    left: 0;
+}
+.day {
+    background-color: var(--back);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-left: 1px rgba(0, 0, 0, 0.4) solid;
+    border-right: 1px rgba(0, 0, 0, 0.4) solid;
+}
+.events {
+    box-sizing: border-box;
+    padding: 5px;
+    grid-column: 2/9;
+    display: grid;
+    grid-template-columns: repeat(7, var(--event-size));
+    grid-auto-flow: column;
+    row-gap: 5px;
+    column-gap: 10px;
+}
+.event {
+    background-color: #CCC;
+    height: 20px;
+}
+.event-end { 
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px; 
+}
+.event-start { 
+    border-top-left-radius: 10px; 
+    border-bottom-left-radius: 10px; 
+}
+[event-start="1"] { grid-column-start: 1; }
+[event-start="2"] { grid-column-start: 2; }
+[event-start="3"] { grid-column-start: 3; }
+[event-start="4"] { grid-column-start: 4; }
+[event-start="5"] { grid-column-start: 5; }
+[event-start="6"] { grid-column-start: 6; }
+[event-start="7"] { grid-column-start: 7; }
+
+[event-span="1"] { grid-column-end: span 1; }
+[event-span="2"] { grid-column-end: span 2; }
+[event-span="3"] { grid-column-end: span 3; }
+[event-span="4"] { grid-column-end: span 4; }
+[event-span="5"] { grid-column-end: span 5; }
+[event-span="6"] { grid-column-end: span 6; }
+[event-span="7"] { grid-column-end: span 7; }
+.day:nth-child(2) {
+    grid-column-start: 2 !important;
+    grid-column-end: span 1 !important;
+}
+.day:nth-child(3) {
+    grid-column-start: 3 !important;
+    grid-column-end: span 1 !important;
+}
+.day:nth-child(4) {
+    grid-column-start: 4 !important;
+    grid-column-end: span 1 !important;
+}
+.day:nth-child(5) {
+    grid-column-start: 5 !important;
+    grid-column-end: span 1 !important;
+}
+.day:nth-child(6) {
+    grid-column-start: 6 !important;
+    grid-column-end: span 1 !important;
+}
+.day:nth-child(7) {
+    grid-column-start: 7 !important;
+    grid-column-end: span 1 !important;
+}
+.day:nth-child(8) {
+    grid-column-start: 8 !important;
+    grid-column-end: span 1 !important;
+}
+.backlog {
+    grid-column: 8/10;
+    grid-row: 1/4;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.4);
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100px auto;
+}
+.header-backlog {
+    width: 100%;
+    height: 100px !important;
+    box-shadow: 
+    inset 5px -5px 5px rgba(0,0,0,.6),
+    inset -5px 5px 10px rgba(252,255,255,.7),
+    0 0 10px 10px rgb(0, 0, 0, 0.4);
+    background-color: rgb(19, 17, 27);
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 50px;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+.main-backlog {
+    min-height: 550px;
+    height: calc(95vh - 100px);
+    max-height: 1100px;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    padding: 10px;
+    display: grid;
+    grid-auto-rows: min-content;
+    row-gap: 5px;
+    overflow-y: auto;
+}
+.task {
+    background-color: rgba(255, 0, 106, 0.356);
+    width: 100%;
+    min-height: 100px;
+    max-height: 150px;
+    border-radius: 10px;
+    border: 1px rgb(0, 0, 0) solid;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+}
