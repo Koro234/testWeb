@@ -91,9 +91,10 @@ let now = new Date();
 let leftDate = new Date();
 let rightDate = new Date();
 let navWeek = 0;
-const userArray = [];
-const tasksOnDesc = [];
-const taskOnBacklog = [];
+let dateArray = [];
+let userArray = [];
+let tasksOnDesc = [];
+let tasksOnBacklog = [];
 // открытие приложения
 function Load() {
     UpdateDatesLine();
@@ -109,12 +110,15 @@ function CreateUserContainer(User) {
     mainContainer.appendChild(userContainer);
     const userName = document.createElement('div');
     userName.classList.add('user-name');
+    userName.ondrop = dropOnName;
     userName.innerText = `${User.firstName} ${User.secondName} ${User.surname}`;
     userContainer.appendChild(userName);
     for (var i = 0; i < 7; i++)
     {
         let dayElement = document.createElement('div');
         dayElement.classList.add('day');
+        dayElement.setAttribute('day-of-week', i);
+        dayElement.ondrop = dropOnDay;
         userContainer.append(dayElement);
     }
     const events = document.createElement('div');
@@ -123,27 +127,26 @@ function CreateUserContainer(User) {
     User.htmlElement = userContainer;
     userArray.push(User);
 }
-//
+// куда пихаем task?
 function SortTasks(Task) {
     if (Task.executor)
     {
         userArray.forEach(f => {
-            if (f.id === Task.executor)
+            if (f.id == Task.executor)
             {
-                CreateTaskOnDesk(f, Task)
                 tasksOnDesc.push(Task);
+                CreateTaskOnDesk(f, Task);
             }
         });
     }
     else
     {
-        taskOnBacklog.push(Task);
+        tasksOnBacklog.push(Task);
         CreateTaskOnBacklog(Task);
     }
 }
-//
+// создание задачи на доске
 function CreateTaskOnDesk(User, Task) {
-    console.log(Task);
     Task.user = User;
     var startDate = new Date(Task.planStartDate);
     var endDate = new Date(Task.planEndDate);
@@ -214,6 +217,46 @@ function allowDrop(e) {
 function drag(e) {
     e.dataTransfer.setData('id', e.target.id);
 }
+//
+function dropOnName(e) {
+    let taskId = e.dataTransfer.getData('id');
+    if (taskId)
+    {
+        let targetId = e.target.parentElement.id;
+        let task = (tasksOnBacklog.filter(f => f.id === taskId))[0];
+        tasksOnBacklog = tasksOnBacklog.filter(f => f.id !== taskId);
+        UpdateTasksOnBacklog();
+        task.executor = targetId;
+        SortTasks(task);
+        UpdateTasksOnDesk();
+    }
+}
+//
+function dropOnDay(e) {
+    let taskId = e.dataTransfer.getData('id');
+    if (taskId)
+    {
+        let targetId = e.target.parentElement.id;
+        let task = (tasksOnBacklog.filter(f => f.id === taskId))[0];
+        tasksOnBacklog = tasksOnBacklog.filter(f => f.id !== taskId);
+        UpdateTasksOnBacklog();
+        task.executor = targetId;
+        const targetDay = e.target.getAttribute('day-of-week');
+        const diffDate = Math.round((new Date(task.planEndDate) - new Date(task.planStartDate)) / (1000 * 60 * 60 * 24));
+        task.planStartDate = dateArray[targetDay];
+        task.planEndDate = new Date(task.planStartDate.getFullYear(), task.planStartDate.getMonth(), task.planStartDate.getDate() + diffDate);
+        SortTasks(task);
+        UpdateTasksOnDesk();
+    }
+}
+function UpdateTasksOnDesk() {
+    userArray.forEach(f => f.htmlElement.lastChild.innerHTML = '');
+    tasksOnDesc.forEach(f => CreateTaskOnDesk(f.user, f));
+}
+function UpdateTasksOnBacklog() {
+    mainBacklog.innerHTML = '';
+    tasksOnBacklog.forEach(f => CreateTaskOnBacklog(f));
+}
 // работа с датами (вверх)
 function UpdateDatesLine() {
     var weekDay = now.getDay();
@@ -226,6 +269,7 @@ function UpdateDatesLine() {
         day: "numeric",
         month: "numeric"
     });
+    dateArray = [];
     for (var i = 0; i < 7; i++)
     {
         var numberDay = numbersDays[i];
@@ -243,14 +287,14 @@ function UpdateDatesLine() {
             rightDate = tempDate;
         }
         numberDay.innerText = formatForDays.format(tempDate);
+        dateArray.push(tempDate);
     }
 }
 // изменение навигации
 function changeNav(num) {
     navWeek += num;
     UpdateDatesLine();
-    userArray.forEach(f => f.htmlElement.lastChild.innerHTML = '');
-    tasksOnDesc.forEach(f => CreateTaskOnDesk(f.user, f));
+    UpdateTasksOnDesk();
 }
 leftButton.onclick = function(){changeNav(-1)};
 rightButton.onclick = function(){changeNav(1)};
