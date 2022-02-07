@@ -119,13 +119,27 @@ function ClosePopup() {
 }
 function OpenPopupFromBacklog(e) {
     var tempTask = (tasksOnBacklog.filter(f => f.id === e.target.parentElement.id))[0];
-    if (popup)
-    {
-        popup.classList.add('open');
-    }
     if (tempTask)
     {
+        if (popup)
+        {
+            popup.classList.add('open');
+        }
         FillPopup(tempTask);
+    }
+}
+function OpenPopupFromDesk(e) {
+    if (e.target.id)
+    {
+        var tempTask = (tasksOnDesc.filter(f => f.id === e.target.id))[0];
+        if (tempTask)
+        {
+            if (popup)
+            {
+                popup.classList.add('open');
+            }
+            FillPopup(tempTask);
+        }
     }
 }
 function FillPopup (Task) {
@@ -143,7 +157,7 @@ function CreateListExecutor(id) {
     var option = document.createElement('option');
     option.innerText = 'Выберите...';
     option.selected = true;
-    option.disabled = true;
+    option.value = -1;
     executor.append(option);
     userArray.forEach(f => {
         var option = document.createElement('option');
@@ -159,12 +173,22 @@ function SaveTask() {
     edittingTask.planStartDate = planStartDate.value;
     edittingTask.planEndDate = planEndDate.value;
     edittingTask.status = statusPopup.value;
-    edittingTask.executor = executor.options[executor.options.selectedIndex].value;
-    if (edittingTask.executor)
+    if (executor.options[executor.options.selectedIndex].value && executor.options[executor.options.selectedIndex].value !== '-1')
     {
+        edittingTask.executor = executor.options[executor.options.selectedIndex].value;
         edittingTask.user = (userArray.filter(f => f.id == edittingTask.executor))[0];
+        MoveTask(edittingTask);
     }
-    UpdateAll(edittingTask);
+    else if (edittingTask.executor)
+    {
+        edittingTask.executor = '';
+        MoveTask(edittingTask);
+    }
+    else
+    {
+        UpdateTasksOnBacklog();
+    }
+
     ClosePopup();
 }
 // открытие приложения
@@ -261,16 +285,14 @@ function CreateTaskOnDesk(User, Task) {
     }
 }
 // 
-function ConstructorTaskElement(Task, start, spane) { // много дублежа кода, нужно переделать
+function ConstructorTaskElement(Task, start, spane) {
     var event = document.createElement('div');
     event.classList.add('event');
     event.id = Task.id;
     event.setAttribute('event-start', start);
     event.setAttribute('event-span', spane);
     event.innerText = Task.subject;
-    var description = document.createElement('div');
-    description.innerText = Task.description;
-    event.append(description);
+    event.addEventListener("click", function(e) {OpenPopupFromDesk(e)});
     var additionalInfo = document.createElement('div');
     additionalInfo.classList.add('additional-info-event');
     event.append(additionalInfo);
@@ -356,7 +378,7 @@ function UpdateTasksOnBacklog() {
     mainBacklog.innerHTML = '';
     tasksOnBacklog.forEach(f => CreateTaskOnBacklog(f));
 }
-function UpdateAll(Task) {
+function MoveTask(Task) {
     tasksOnDesc = tasksOnDesc.filter(f => f.id !== Task.id);
     tasksOnBacklog = tasksOnBacklog.filter(f => f.id !== Task.id);
     if (Task.executor)

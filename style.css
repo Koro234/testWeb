@@ -350,6 +350,7 @@ button {
     color: black;
     max-width: 800px;
     max-height: 1200px;
+    border-radius: 10px;
     padding: 30px;
     display: grid;
     grid-template-columns: 50% 50%;
