@@ -1,0 +1,78 @@
+@media (max-width: 1000px) {
+    :root {
+        --cell-size: minmax(70px, 1fr);
+        --event-size: minmax(60px, 1fr);
+    }
+    .box {
+        min-width: 150px;
+        max-width: 1000px;
+        min-height: 350px;
+        max-height: 1200px;
+        grid-template-columns: repeat(5, 1fr);
+        position: relative;
+    }
+    .header-container {
+        grid-column: 1/6;
+        box-shadow: 
+        inset 5px -5px 5px rgba(0,0,0,.6),
+        inset 5px 5px 10px rgba(252,255,255,.7),
+        0 0 1px 1px rgb(0, 0, 0, 0.4);
+        grid-template-columns: repeat(5, var(--cell-size));
+    }
+    .buttons {
+        grid-column: 1/3;
+    }
+    button {
+        box-shadow: 
+        inset -5px -5px 5px rgba(0,0,0,.6),
+        inset 5px 5px 10px rgba(252,255,255,.7),
+        0 0 1px 1px rgb(0, 0, 0, 0.4);
+    }
+    .now-date {
+        grid-column: 3/6;
+        font-size: 20px;
+    }
+    .head-day {
+        font-size: 10px;
+        overflow: hidden;
+    }
+    .users-head {
+        font-size: 10px;
+        overflow: hidden;
+        box-shadow: 
+        inset -5px -5px 5px rgba(0,0,0,.6),
+        inset 5px 5px 10px rgba(252,255,255,.7),
+        0 0 1px 1px rgb(0, 0, 0, 0.4);
+    }
+    .user-name {
+        font-size: 10px;
+        overflow: hidden;
+    }
+    .backlog {
+        background-color: rgb(66, 66, 66);
+        z-index: 20;
+        position: absolute;
+        grid-column: 1/6;
+        grid-row: 1/4;
+        width: 100%;
+        height: 100%;
+        z-index: -10;
+        opacity: 0;
+        visibility: hidden;
+    }
+    .backlog.open {
+        z-index: 20;
+        opacity: 1;
+        visibility: visible;
+    }
+    .backlog-close {
+        z-index: 20;
+        opacity: 1;
+        visibility: visible;
+    }
+    .backlog-open {
+        z-index: 10;
+        opacity: 1;
+        visibility: visible;
+    }
+}

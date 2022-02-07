@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./media.css">
+    <link rel="shortcut icon" href="./logo.png" type="image/png">
     <title>TestWeb</title>
 </head>
 <body>
@@ -15,7 +17,7 @@
                 <button class="right-button" id="rightButton">Следующая неделя</button>
             </div>
             <div class="now-date" id="nowDate">Февраль, 2022</div>
-            <div class="other"></div>
+            <a href="#" class="backlog-open" id="backlogOpen">=</a>
         </header>
         <main class="main-container" id="mainContainer">
             <div class="users-head">Пользователи</div>
@@ -43,8 +45,10 @@
                 </div>
             </div>
         </main>
-        <div class="backlog" id="backLog">
-            <header class="header-backlog">Backlog</header>
+        <div class="backlog" id="backlog">
+            <header class="header-backlog">Backlog
+                <a href="#" class="backlog-close" id="backlogClose">X</a>
+            </header>
             <main class="main-backlog" id="mainBacklog">
             </main>
         </div>

@@ -55,8 +55,8 @@ class Task {
     constructor(Task) {
         this.id = Task.id;
         this.order = Task.order;
-        this.planStartDate = Task.planStartDate;
-        this.planEndDate = Task.planEndDate;
+        this.planStartDate = new Date(Task.planStartDate);
+        this.planEndDate = new Date(Task.planEndDate);
         this.status = Task.status;
         this.creationAuthor = Task.creationAuthor;
         this.executor = Task.executor;
@@ -81,6 +81,7 @@ class Task {
 }
 
 const mainContainer = document.getElementById('mainContainer');
+const backlog = document.getElementById('backlog');
 const mainBacklog = document.getElementById('mainBacklog');
 const nowDate = document.getElementById('nowDate');
 const numbersDays = document.getElementsByClassName('number-day');
@@ -101,6 +102,12 @@ const popupClose = document.getElementById('popupClose');
 popupCloseArea.onclick = ClosePopup;
 popupClose.onclick = ClosePopup;
 
+const backlogOpen = document.getElementById('backlogOpen');
+backlogOpen.onclick = OpenBacklog;
+const backlogClose = document.getElementById('backlogClose');
+backlogClose.onclick = CloseBacklog;
+
+
 let now = new Date();
 let leftDate = new Date();
 let rightDate = new Date();
@@ -118,20 +125,23 @@ function ClosePopup() {
     }
 }
 function OpenPopupFromBacklog(e) {
-    var tempTask = (tasksOnBacklog.filter(f => f.id === e.target.parentElement.id))[0];
-    if (tempTask)
+    if (e.target.parentElement.id)
     {
-        if (popup)
+        var tempTask = (tasksOnBacklog.filter(f => f.id === e.target.parentElement.id))[0];
+        if (tempTask)
         {
-            popup.classList.add('open');
+            if (popup)
+            {
+                popup.classList.add('open');
+            }
+            FillPopup(tempTask);
         }
-        FillPopup(tempTask);
-    }
+    } 
 }
 function OpenPopupFromDesk(e) {
-    if (e.target.id)
+    if (e.target.parentElement.id)
     {
-        var tempTask = (tasksOnDesc.filter(f => f.id === e.target.id))[0];
+        var tempTask = (tasksOnDesc.filter(f => f.id === e.target.parentElement.id))[0];
         if (tempTask)
         {
             if (popup)
@@ -142,16 +152,20 @@ function OpenPopupFromDesk(e) {
         }
     }
 }
-function FillPopup (Task) {
+function FillPopup (Task) { // заполнение попапа данными из задачи
     subjectPopup.value = Task.subject;
     descriptionPopup.value = Task.description;
-    planStartDate.value = Task.planStartDate;
-    planEndDate.value =  Task.planEndDate;
+    planStartDate.value = myDateToString(Task.planStartDate);
+    planEndDate.value =  myDateToString(Task.planEndDate);
     statusPopup.value = Task.status;
     CreateListExecutor(Task.executor);
     edittingTask = Task;
 }
-//Создание списка users
+//
+function myDateToString(date) {
+    return (`${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`);
+}
+//Создание списка пропапа
 function CreateListExecutor(id) {
     executor.innerHTML = '';
     var option = document.createElement('option');
@@ -167,11 +181,17 @@ function CreateListExecutor(id) {
         executor.append(option);
     });
 }
-function SaveTask() {
+function SaveTask() { // сохраниение изменений в задачу
     edittingTask.subject = subjectPopup.value;
     edittingTask.description = descriptionPopup.value;
-    edittingTask.planStartDate = planStartDate.value;
-    edittingTask.planEndDate = planEndDate.value;
+    var startDate = new Date(planStartDate.value);
+    var endDate = new Date(planEndDate.value);
+    if (startDate > endDate) 
+    {
+        endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1);
+    }
+    edittingTask.planStartDate = startDate;
+    edittingTask.planEndDate = endDate;
     edittingTask.status = statusPopup.value;
     if (executor.options[executor.options.selectedIndex].value && executor.options[executor.options.selectedIndex].value !== '-1')
     {
@@ -190,6 +210,13 @@ function SaveTask() {
     }
 
     ClosePopup();
+}
+// открытие backlog для мал размера экрана
+function OpenBacklog() {
+    backlog.classList.add('open');
+}
+function CloseBacklog() {
+    backlog.classList.remove('open');
 }
 // открытие приложения
 function Load() {
@@ -244,13 +271,13 @@ function SortTasks(Task) {
 // создание задачи на доске
 function CreateTaskOnDesk(User, Task) {
     Task.user = User;
-    var startDate = new Date(Task.planStartDate);
-    var endDate = new Date(Task.planEndDate);
+    var startDate = Task.planStartDate;
+    var endDate = Task.planEndDate;
     var startDay = startDate.getDay();
     startDay = startDay === 0 ? 7 : (startDay);
     var endDay = endDate.getDay();
     endDay = endDay === 0 ? 7 : (endDay);
-    if (startDate < endDate) 
+    if (startDate <= endDate) 
     {
         if ((startDate >= leftDate && startDate <= rightDate) && (endDate >= leftDate && endDate <= rightDate))
         {
@@ -284,14 +311,17 @@ function CreateTaskOnDesk(User, Task) {
         }
     }
 }
-// 
+// собирает элемент для доски
 function ConstructorTaskElement(Task, start, spane) {
     var event = document.createElement('div');
     event.classList.add('event');
     event.id = Task.id;
     event.setAttribute('event-start', start);
     event.setAttribute('event-span', spane);
-    event.innerText = Task.subject;
+    var subject = document.createElement('div');
+    subject.classList.add('subject');
+    subject.textContent = Task.subject;
+    event.append(subject);
     event.addEventListener("click", function(e) {OpenPopupFromDesk(e)});
     var additionalInfo = document.createElement('div');
     additionalInfo.classList.add('additional-info-event');
@@ -304,14 +334,14 @@ function ConstructorTaskElement(Task, start, spane) {
         month: "numeric"
     });
     var dateStart = document.createElement('div');
-    dateStart.innerText = 'С ' + formatForDays.format(new Date(Task.planStartDate));
+    dateStart.innerText = 'С ' + formatForDays.format(Task.planStartDate);
     additionalInfo.append(dateStart);
     var dateEnd = document.createElement('div');
-    dateEnd.innerText = 'По ' + formatForDays.format(new Date(Task.planEndDate));
+    dateEnd.innerText = 'По ' + formatForDays.format(Task.planEndDate);
     additionalInfo.append(dateEnd);
     return event;
 }
-//
+// собирает элемент для backlog
 function CreateTaskOnBacklog(Task) {
     var backlogContainer = document.createElement('div');
     backlogContainer.classList.add('task');
@@ -363,7 +393,7 @@ function DropOnDay(e) {
         UpdateTasksOnBacklog();
         task.executor = targetId;
         const targetDay = e.target.getAttribute('day-of-week');
-        const diffDate = Math.round((new Date(task.planEndDate) - new Date(task.planStartDate)) / (1000 * 60 * 60 * 24));
+        const diffDate = Math.round((task.planEndDate - task.planStartDate) / (1000 * 60 * 60 * 24));
         task.planStartDate = dateArray[targetDay];
         task.planEndDate = new Date(task.planStartDate.getFullYear(), task.planStartDate.getMonth(), task.planStartDate.getDate() + diffDate);
         SortTasks(task);
